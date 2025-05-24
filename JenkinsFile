@@ -10,12 +10,31 @@ pipeline{
                 echo "Compile the code andgenerate any necessary artefacts"
             }
         }
-        stage('Unit and Integration Tests'){
-            steps{
-                echo "Unit tests"
-                echo "Integration tests"
-            }
+stage('Unit and Integration Tests'){
+    steps{
+        echo "Unit tests"
+        echo "Integration tests"
+    }
+    post{
+        success {
+            emailext(
+                to: "mudunkotuwasavith@gmail.com",
+                subject: "SUCCESS: Unit and Integration Tests",
+                body: "The Unit and Integration tests success! See attached logs.",
+                attachmentsPattern: "**/target/*.log"
+            )
         }
+        failure {
+            emailext(
+                to: "mudunkotuwasavith@gmail.com",
+                subject: "FAILURE: Unit and Integration Tests",
+                body: "The Unit and Integration tests failed! See attached logs.",
+                attachmentsPattern: "**/target/*.log"
+            )
+        }
+    }
+}
+
         stage('Code Analysis'){
             steps{
                 echo "Check the quality of the code"
@@ -27,6 +46,24 @@ pipeline{
                 echo "Deploy the application to a testing environment specified by the environment variable"
                 echo "Integration tests"
             }
+            post{
+                success {
+                    emailext(
+                        to: "mudunkotuwasavith@gmail.com",
+                        subject: "SUCCESS: Security Scan",
+                        body: "The Security Scan was a success! See attached logs.",
+                        attachmentsPattern: "**/target/*.log"
+                    )
+                }
+                failure {
+                    emailext(
+                        to: "mudunkotuwasavith@gmail.com",
+                        subject: "FAILURE: Security Scan",
+                        body: "The Security Scan failed! See attached logs.",
+                        attachmentsPattern: "**/target/*.log"
+                    )
+                }
+    }
         }
         stage('Deploy to Staging'){
             steps{
