@@ -6,8 +6,9 @@ pipeline{
     stages{
         stage('Build'){
             steps{
+                echo "Building Using WS02 Integrator"
                 echo "Fetch the source code from the directory path specified by the environment variable"
-                echo "Compile the code andgenerate any necessary artefacts"
+                echo "Compile the code and generate any necessary artefacts"
             }
         }
 stage('Unit and Integration Tests'){
