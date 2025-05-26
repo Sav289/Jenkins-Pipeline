@@ -1,7 +1,7 @@
 pipeline{
     agent any
     environment{
-        NAME= "Savith"
+        NAME= "Sav"
         SERVER="AWS EC2"
     }
     stages{
