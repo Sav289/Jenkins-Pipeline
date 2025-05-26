@@ -2,6 +2,7 @@ pipeline{
     agent any
     environment{
         NAME= "Savith"
+        SERVER="AWS EC2"
     }
     stages{
         stage('Build'){
@@ -40,13 +41,15 @@ stage('Unit and Integration Tests'){
         stage('Code Analysis'){
             steps{
                 echo "Check the quality of the code"
-                echo  "Compile the code and generate any necessary artefacts"
+                echo "Compile the code and generate any necessary artefacts"
+                echo "Analysing code using JavaScript static code analysis"
             }
         }
         stage('Security Scan'){
             steps{
                 echo "Deploy the application to a testing environment specified by the environment variable"
                 echo "Integration tests"
+                echo "Conducting security tests using CrowdStrike Falcon® Exposure Management"
             }
             post{
                 success {
@@ -69,18 +72,19 @@ stage('Unit and Integration Tests'){
         }
         stage('Deploy to Staging'){
             steps{
-                echo "Deploy the application to a testing environment specified by the environment variable"
-                echo "Integration tests"
+                echo "Deploy the application to a testing environment : $SERVER"
             }
         }
         stage('Integration Tests on Staging'){
             steps{
-                sleep 10
+                echo "Run integration tests on the staging environment."
+                echo "Ensure the application functions as expected in a production-like environment"
             }
         }
         stage ('Deploy to Production'){
             steps{
-                echo "$NAME has successfully deployed their code"
+                echo "Deploy to $SERVER"
+                echo "$NAME has successfully deployed their code to the $SERVER server"
             }
         }
     }
