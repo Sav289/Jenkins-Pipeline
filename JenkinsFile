@@ -15,6 +15,7 @@ stage('Unit and Integration Tests'){
     steps{
         echo "Unit tests"
         echo "Integration tests"
+        echo "Testing using SonarQube"
     }
     post{
         success {
