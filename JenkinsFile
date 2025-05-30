@@ -50,9 +50,12 @@ pipeline{
         }
         stage('Security Scan'){
             steps{
-                echo "Deploy the application to a testing environment specified by the environment variable"
-                echo "Integration tests"
-                echo "Conducting security tests using CrowdStrike Falcon® Exposure Management"
+                bat '''
+                if not exist target mkdir target
+                echo Deploying to test environment... > target\\security_scan.log
+                echo Running integration tests... >> target\\security_scan.log
+                echo Security testing using CrowdStrike Falcon Exposure Management... >> target\\security_scan.log
+                '''
             }
             post{
                 success {
@@ -60,7 +63,7 @@ pipeline{
                         to: "mudunkotuwasavith@gmail.com",
                         subject: "SUCCESS: Security Scan",
                         body: "The Security Scan was a success! See attached logs.",
-                        attachmentsPattern: "**/target/*.log"
+                        attachmentsPattern: "**/target/security_scan.log"
                     )
                 }
                 failure {
@@ -68,10 +71,10 @@ pipeline{
                         to: "mudunkotuwasavith@gmail.com",
                         subject: "FAILURE: Security Scan",
                         body: "The Security Scan failed! See attached logs.",
-                        attachmentsPattern: "**/target/*.log"
+                        attachmentsPattern: "**/target/security_scan.log"
                     )
                 }
-    }
+            }
         }
         stage('Deploy to Staging'){
             steps{
