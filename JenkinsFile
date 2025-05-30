@@ -12,31 +12,34 @@ pipeline{
                 echo "Compile the code and generate any necessary artefacts"
             }
         }
-stage('Unit and Integration Tests'){
-    steps{
-        echo "Unit tests"
-        echo "Integration tests"
-        echo "Testing using SonarQube"
-    }
-    post{
-        success {
-            emailext(
-                to: "mudunkotuwasavith@gmail.com",
-                subject: "SUCCESS: Unit and Integration Tests",
-                body: "The Unit and Integration tests success! See attached logs.",
-                attachmentsPattern: "**/target/*.log"
-            )
+        stage('Unit and Integration Tests'){
+            steps{
+                bat '''
+                if not exist target mkdir target
+                echo Running unit tests... > target\\test.log
+                echo Running integration tests... >> target\\test.log
+                echo SonarQube analysis started >> target\\test.log
+                '''
+            }
+            post {
+                success {
+                    emailext(
+                        to: "mudunkotuwasavith@gmail.com",
+                        subject: "SUCCESS: Unit and Integration Tests",
+                        body: "The Unit and Integration tests were successful! See the attached logs.",
+                        attachmentsPattern: "**/target/test.log"
+                    )
+                }
+                failure {
+                    emailext(
+                        to: "mudunkotuwasavith@gmail.com",
+                        subject: "FAILURE: Unit and Integration Tests",
+                        body: "The Unit and Integration tests failed! See the attached logs.",
+                        attachmentsPattern: "**/target/test.log"
+                    )
+                }
+            }
         }
-        failure {
-            emailext(
-                to: "mudunkotuwasavith@gmail.com",
-                subject: "FAILURE: Unit and Integration Tests",
-                body: "The Unit and Integration tests failed! See attached logs.",
-                attachmentsPattern: "**/target/*.log"
-            )
-        }
-    }
-}
 
         stage('Code Analysis'){
             steps{
