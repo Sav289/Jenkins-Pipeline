@@ -14,9 +14,9 @@ pipeline{
         }
 stage('Unit and Integration Tests'){
     steps{
-        echo "Unit tests"
-        echo "Integration tests"
-        echo "Testing using SonarQube"
+        echo "Unit tests" target/test.log
+        echo "Integration tests" target/test.log
+        echo "Testing using SonarQube" target/test.log
     }
     post{
         success {
@@ -47,9 +47,9 @@ stage('Unit and Integration Tests'){
         }
         stage('Security Scan'){
             steps{
-                echo "Deploy the application to a testing environment specified by the environment variable"
-                echo "Integration tests"
-                echo "Conducting security tests using CrowdStrike Falcon® Exposure Management"
+                echo "Deploy the application to a testing environment specified by the environment variable" target/test.log
+                echo "Integration tests" target/test.log
+                echo "Conducting security tests using CrowdStrike Falcon® Exposure Management" target/test.log
             }
             post{
                 success {
