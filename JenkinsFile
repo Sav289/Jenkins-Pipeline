@@ -14,31 +14,29 @@ pipeline{
         }
 stage('Unit and Integration Tests'){
     steps{
-        sh '''
-        mkdir -p target
-        echo "Running unit tests..." > target/test.log
-        echo "Running integration tests..." >> target/test.log
-        echo "SonarQube analysis started" >> target/test.log
-        '''
+        echo "Unit tests"
+        echo "Integration tests"
+        echo "Testing using SonarQube"
     }
-    post {
+    post{
         success {
             emailext(
                 to: "mudunkotuwasavith@gmail.com",
                 subject: "SUCCESS: Unit and Integration Tests",
-                body: "The Unit and Integration tests were successful! See the attached logs.",
-                attachmentsPattern: "**/target/test.log"
+                body: "The Unit and Integration tests success! See attached logs.",
+                attachmentsPattern: "**/target/*.log"
             )
         }
         failure {
             emailext(
                 to: "mudunkotuwasavith@gmail.com",
                 subject: "FAILURE: Unit and Integration Tests",
-                body: "The Unit and Integration tests failed! See the attached logs.",
-                attachmentsPattern: "**/target/test.log"
+                body: "The Unit and Integration tests failed! See attached logs.",
+                attachmentsPattern: "**/target/*.log"
             )
         }
     }
+}
 
         stage('Code Analysis'){
             steps{
