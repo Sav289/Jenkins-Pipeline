@@ -14,9 +14,9 @@ pipeline{
         }
 stage('Unit and Integration Tests'){
     steps{
-        echo "Unit tests" target/test.log
-        echo "Integration tests" target/test.log
-        echo "Testing using SonarQube" target/test.log
+        echo "Unit tests" target
+        echo "Integration tests" 
+        echo "Testing using SonarQube" 
     }
     post{
         success {
